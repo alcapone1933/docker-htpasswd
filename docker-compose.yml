@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  htpasswd:
+    # build:
+      # dockerfile: ./Dockerfile
+    image: alcapone1933/htpasswd:latest
+    container_name: htpasswd
+    # env_file:
+      # - .env
+    environment:
+      - USER_NAME=admin	
+      - USER_PASSWD=admin
+    volumes:
+      - data:/data
+volumes:
+  data:
+    name: htpasswd_data
