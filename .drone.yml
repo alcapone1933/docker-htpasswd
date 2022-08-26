@@ -1,0 +1,50 @@
+---
+kind: pipeline
+type: docker
+name: BUILD-TEST
+steps:
+  - name: Build Multi-arch
+    image: thegeeklab/drone-docker-buildx
+    privileged: true
+    settings:
+      platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
+      repo: alcapone1933/htpasswd
+      tags: latest
+      dry_run: true
+
+trigger:
+  branch:
+  - master
+  event:
+  - custom
+  - push
+  - pull_request
+
+---
+kind: pipeline
+type: docker
+name: BUILD
+steps:
+
+  - name: Build Multi-arch
+    image: thegeeklab/drone-docker-buildx
+    privileged: true
+    settings:
+      username: 
+        from_secret: DOCKER_USER
+      password: 
+        from_secret: DOCKER_PASS    
+      platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
+      repo: alcapone1933/htpasswd
+      tags: latest
+
+trigger:
+  branch:
+  - master
+  event:
+  - custom
+  - push
+  - pull_request
+
+depends_on:
+  - BUILD-TEST
