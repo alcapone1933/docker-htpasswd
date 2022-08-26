@@ -1,4 +1,4 @@
-# Docker Htpasswd bcrypt Generator
+# Docker Htpasswd Generator bcrypt
 
 ### Docker CLI
 
