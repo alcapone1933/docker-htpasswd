@@ -1,8 +1,48 @@
-#!/usr/bin/env sh
-sleep 5
-echo -n "" > /data/htpasswd
-echo > /data/htpasswd && echo >> /data/htpasswd
-echo "YOUR PASSWORD: `htpasswd -Bbn $USER_NAME $USER_PASSWD`" >> /data/htpasswd && echo >> /data/htpasswd
-# htpasswd -Bbn $USER_NAME $USER_PASSWD >> /data/htpasswd
+#!/usr/bin/env bash
+# https://httpd.apache.org/docs/2.4/misc/password_encryptions.html
+
 sleep 2
-cat /data/htpasswd
+echo -n "" > $FILE_AUTH
+
+# echo > /data/auth && echo >> /data/auth
+# echo "YOUR PASSWORD: `htpasswd -Bbn $USER_NAME $USER_PASSWD`" >> /data/auth && echo >> /data/auth
+# htpasswd -Bbn $USER_NAME $USER_PASSWD >> /data/auth
+# sleep 2
+# cat /data/auth
+
+
+if [[ "$PASSWORD_FORMAT" =~ (bcrypt|MD5|SHA1|CRYPT) ]]; then
+    if [[ "$PASSWORD_FORMAT" == "bcrypt" ]]; then
+        # bcrypt: htpasswd -nbB myName myPassword
+        echo > $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: `htpasswd -nbB $USER_NAME $USER_PASSWD`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        sleep 1
+        cat $FILE_AUTH
+    elif [[ "$PASSWORD_FORMAT" == "MD5" ]]; then
+        # MD5: htpasswd -nbm myName myPassword
+        echo > $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: `htpasswd -nbm $USER_NAME $USER_PASSWD`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        sleep 1
+        cat $FILE_AUTH
+    elif [[ "$PASSWORD_FORMAT" == "SHA1" ]]; then
+        # SHA1: htpasswd -nbs myName myPassword
+        echo > $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: `htpasswd -nbs $USER_NAME $USER_PASSWD`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        sleep 1
+        cat $FILE_AUTH
+    elif [[ "$PASSWORD_FORMAT" == "CRYPT" ]]; then
+        # CRYPT: htpasswd -nbd myName myPassword
+        echo > $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: `htpasswd -nbd $USER_NAME $USER_PASSWD`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        sleep 1
+        cat $FILE_AUTH
+    fi
+else
+    echo
+    echo "ERROR Variable PASSWORD_FORMAT is Wrong"
+    echo
+    exit 1
+fi
+
+exit 0
+

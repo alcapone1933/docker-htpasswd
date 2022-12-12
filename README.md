@@ -9,6 +9,7 @@
 docker run -it --rm \
   -e USER_NAME=admin \
   -e USER_PASSWD=admin \
+  -e PASSWORD_FORMAT=bcrypt \
   -v htpasswd_data:/data \
   alcapone1933/htpasswd:latest
 ```
@@ -24,6 +25,7 @@ services:
     environment:
       - USER_NAME=admin	
       - USER_PASSWD=admin
+      - PASSWORD_FORMAT=bcrypt
     volumes:
       - data:/data
 volumes:
@@ -34,16 +36,19 @@ volumes:
 
 ## Volume params
 
-| Name   |Value    |Example      |
-|--------|---------|-------------|
-|  Data  | volume  | data:/data  |
-
+| Name      | Value   | Example            |
+| --------- |-------- | ------------------ |
+| Data      | volume  | data:/data         |
+| File auth | path    | ./auth:/data/auth  |
 * * *
 
 ## Env params
 
 
-| Name     | Value        | Example     |
-|----------|--------------|-------------|
-| USER     | USER_NAME    | admin       |
-| PASSWORD | USER_PASSWD  | admin       |
+| Name                 | Value           | Default     | Example    | FORMAT                |
+| -------------------- | --------------- | ----------- | ---------- | --------------------- |
+| USER                 | USER_NAME       | admin       | admin      | --------------------- |
+| PASSWORD             | USER_PASSWD     | admin       | admin      | --------------------- |
+| PASSWORD             | USER_PASSWD     | admin       | admin      | --------------------- |
+| PASSWORD Formats     | PASSWORD_FORMAT | bcrypt      | bcrypt     | bcrypt,MD5,SHA1,CRYPT |
+| FILE auth #Optional  | FILE_AUTH       | /data/auth  | /data/auth | --------------------- |

@@ -1,7 +1,9 @@
 FROM alpine:latest
-ENV USER_NAME=admin
-ENV USER_PASSWD=admin
-RUN apk add --update apache2-utils \
+ENV USER_NAME="admin" \
+    USER_PASSWD="admin" \
+    PASSWORD_FORMAT="bcrypt" \
+    FILE_AUTH="/data/auth"
+RUN apk add --update --no-cache apache2-utils bash \
     && rm -rf /var/cache/apk/*
 RUN mkdir /data && touch /data/htpasswd
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
