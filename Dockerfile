@@ -9,7 +9,7 @@ ENV USER_NAME="admin" \
 RUN apk add --update --no-cache apache2-utils bash argon2 \
     && rm -rf /var/cache/apk/*
 RUN mkdir /data && touch /data/htpasswd
-COPY COPY --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
 # VOLUME [ "/data" ]
 ENTRYPOINT ["/sbin/tini", "--"]
 # CMD ["htpasswd -Bbn $USER_NAME $USER_PASSWD > /data/htpasswd"]
