@@ -10,6 +10,8 @@ services:
     environment:
       - USER_NAME=admin	
       - USER_PASSWD=admin
+      - PASSWORD_FORMAT=bcrypt
+      # - ARGON2_SALT=somesalt
     volumes:
       - data:/data
 volumes:

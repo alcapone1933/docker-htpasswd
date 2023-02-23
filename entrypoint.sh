@@ -11,7 +11,7 @@ echo -n "" > $FILE_AUTH
 # cat /data/auth
 
 
-if [[ "$PASSWORD_FORMAT" =~ (bcrypt|MD5|SHA1|CRYPT) ]]; then
+if [[ "$PASSWORD_FORMAT" =~ (bcrypt|MD5|SHA1|CRYPT|argon2i) ]]; then
     if [[ "$PASSWORD_FORMAT" == "bcrypt" ]]; then
         # bcrypt: htpasswd -nbB myName myPassword
         echo > $FILE_AUTH && echo >> $FILE_AUTH
@@ -36,6 +36,12 @@ if [[ "$PASSWORD_FORMAT" =~ (bcrypt|MD5|SHA1|CRYPT) ]]; then
         echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: `htpasswd -nbd $USER_NAME $USER_PASSWD`" >> $FILE_AUTH && echo >> $FILE_AUTH
         sleep 1
         cat $FILE_AUTH
+    elif [[ "$PASSWORD_FORMAT" == "argon2i" ]]; then
+        # argon2i: echo -n "myPassword" | argon2 somesalt -i -t 3 -m 12 -p 1 -l 32 -e
+        echo > $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: $USER_NAME:`echo "$USER_PASSWD" | argon2 $ARGON2_SALT -i -t 3 -m 12 -p 1 -l 32 -e`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        sleep 1
+        cat $FILE_AUTH
     fi
 else
     echo
@@ -45,4 +51,3 @@ else
 fi
 
 exit 0
-
