@@ -1,4 +1,4 @@
-# Docker Htpasswd Generator bcrypt,MD5,SHA1,CRYPT,argon2i
+# Docker Htpasswd Generator bcrypt,MD5,SHA1,CRYPT,argon2
 
 [![Build Status](https://shields.cosanostra-cloud.de/drone/build/alcapone1933/docker-htpasswd?logo=drone&server=https%3A%2F%2Fdrone.docker-for-life.de)](https://drone.docker-for-life.de/alcapone1933/docker-htpasswd)
 [![Build Status Branch Master](https://shields.cosanostra-cloud.de/drone/build/alcapone1933/docker-htpasswd/master?logo=drone&label=build%20%5Bbranch%20master%5D&server=https%3A%2F%2Fdrone.docker-for-life.de)](https://drone.docker-for-life.de/alcapone1933/docker-htpasswd/branches)
@@ -51,11 +51,11 @@ volumes:
 
 ## Env params
 
-| Name                 | Value           | Default     | Example    | FORMAT                        |
-| -------------------- | --------------- | ----------- | ---------- | ----------------------------- |
-| USER                 | USER_NAME       | admin       | admin      | ----------------------------- |
-| PASSWORD             | USER_PASSWD     | admin       | admin      | ----------------------------- |
-| PASSWORD             | USER_PASSWD     | admin       | admin      | ----------------------------- |
-| PASSWORD Formats     | PASSWORD_FORMAT | bcrypt      | bcrypt     | bcrypt,MD5,SHA1,CRYPT,argon2i |
-| ARGON2 SALT          | ARGON2_SALT     | somesalt    | somesalt   | ----------------------------- |
-| FILE auth #Optional  | FILE_AUTH       | /data/auth  | /data/auth | ----------------------------- |
+| Name                 | Value           | Default     | Example    | FORMAT                                         |
+| -------------------- | --------------- | ----------- | ---------- | ---------------------------------------------- |
+| USER                 | USER_NAME       | admin       | admin      | ---------------------------------------------- |
+| PASSWORD             | USER_PASSWD     | admin       | admin      | ---------------------------------------------- |
+| PASSWORD             | USER_PASSWD     | admin       | admin      | ---------------------------------------------- |
+| PASSWORD Formats     | PASSWORD_FORMAT | bcrypt      | bcrypt     | bcrypt,MD5,SHA1,CRYPT,argon2i,argon2d,argon2id |
+| ARGON2 SALT          | ARGON2_SALT     | somesalt    | somesalt   | ---------------------------------------------- |
+| FILE auth #Optional  | FILE_AUTH       | /data/auth  | /data/auth | ---------------------------------------------- |

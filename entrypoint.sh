@@ -11,7 +11,7 @@ echo -n "" > $FILE_AUTH
 # cat /data/auth
 
 
-if [[ "$PASSWORD_FORMAT" =~ (bcrypt|MD5|SHA1|CRYPT|argon2i) ]]; then
+if [[ "$PASSWORD_FORMAT" =~ (bcrypt|MD5|SHA1|CRYPT|argon2i|argon2d|argon2id) ]]; then
     if [[ "$PASSWORD_FORMAT" == "bcrypt" ]]; then
         # bcrypt: htpasswd -nbB myName myPassword
         echo > $FILE_AUTH && echo >> $FILE_AUTH
@@ -37,9 +37,24 @@ if [[ "$PASSWORD_FORMAT" =~ (bcrypt|MD5|SHA1|CRYPT|argon2i) ]]; then
         sleep 1
         cat $FILE_AUTH
     elif [[ "$PASSWORD_FORMAT" == "argon2i" ]]; then
-        # argon2i: echo -n "myPassword" | argon2 somesalt -i -t 3 -m 12 -p 1 -l 32 -e
+        # argon2i: echo -n "myPassword" | argon2 somesalt -i -t 3 -m 16    -p 4 -l 32 -e
+        # argon2i: echo -n "myPassword" | argon2 somesalt -i -t 3 -k 65536 -p 4 -l 32 -e
         echo > $FILE_AUTH && echo >> $FILE_AUTH
-        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: $USER_NAME:`echo "$USER_PASSWD" | argon2 $ARGON2_SALT -i -t 3 -m 12 -p 1 -l 32 -e`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: $USER_NAME:`echo "$USER_PASSWD" | argon2 $ARGON2_SALT -i -t 3 -m 16 -p 4 -l 32 -e`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        sleep 1
+        cat $FILE_AUTH
+    elif [[ "$PASSWORD_FORMAT" == "argon2d" ]]; then
+        # argon2d: echo -n "myPassword" | argon2 somesalt -d -t 3 -m 16    -p 4 -l 32 -e
+        # argon2d: echo -n "myPassword" | argon2 somesalt -d -t 3 -k 65536 -p 4 -l 32 -e
+        echo > $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: $USER_NAME:`echo "$USER_PASSWD" | argon2 $ARGON2_SALT -d -t 3 -m 16 -p 4 -l 32 -e`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        sleep 1
+        cat $FILE_AUTH
+    elif [[ "$PASSWORD_FORMAT" == "argon2id" ]]; then
+        # argon2id: echo -n "myPassword" | argon2 somesalt -id -t 3 -m 16    -p 4 -l 32 -e
+        # argon2id: echo -n "myPassword" | argon2 somesalt -id -t 3 -k 65536 -p 4 -l 32 -e
+        echo > $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: $USER_NAME:`echo "$USER_PASSWD" | argon2 $ARGON2_SALT -id -t 3 -m 16 -p 4 -l 32 -e`" >> $FILE_AUTH && echo >> $FILE_AUTH
         sleep 1
         cat $FILE_AUTH
     fi
@@ -49,5 +64,4 @@ else
     echo
     exit 1
 fi
-
 exit 0
