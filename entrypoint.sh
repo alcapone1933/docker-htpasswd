@@ -15,13 +15,21 @@ if [[ "$PASSWORD_FORMAT" =~ (bcrypt|MD5|SHA1|CRYPT|argon2i|argon2d|argon2id) ]];
     if [[ "$PASSWORD_FORMAT" == "bcrypt" ]]; then
         # bcrypt: htpasswd -nbB myName myPassword
         echo > $FILE_AUTH && echo >> $FILE_AUTH
-        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: `htpasswd -nbB $USER_NAME $USER_PASSWD`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        PASSWORD_HASH=$(htpasswd -nbB $USER_NAME $USER_PASSWD)
+        PASSWORD_HASH_SED=$(echo "$PASSWORD_HASH" | sed 's#\$#\$\$#g')
+        # echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: `htpasswd -nbB $USER_NAME $USER_PASSWD`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: ${PASSWORD_HASH}" >> $FILE_AUTH && echo >> $FILE_AUTH
+        echo "FOR DOCKER-COMPOSE: environment: - PASSWORD=${PASSWORD_HASH_SED}" >> $FILE_AUTH && echo >> $FILE_AUTH
         sleep 1
         cat $FILE_AUTH
     elif [[ "$PASSWORD_FORMAT" == "MD5" ]]; then
         # MD5: htpasswd -nbm myName myPassword
         echo > $FILE_AUTH && echo >> $FILE_AUTH
-        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: `htpasswd -nbm $USER_NAME $USER_PASSWD`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        PASSWORD_HASH=$(htpasswd -nbm $USER_NAME $USER_PASSWD)
+        PASSWORD_HASH_SED=$(echo "$PASSWORD_HASH" | sed 's#\$#\$\$#g')
+        # echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: `htpasswd -nbm $USER_NAME $USER_PASSWD`" >> $FILE_AUTH && echo >> $FILE_AUTH
+        echo "PASSWORD FORMAT: $PASSWORD_FORMAT, YOUR PASSWORD: ${PASSWORD_HASH}" >> $FILE_AUTH && echo >> $FILE_AUTH
+        echo "FOR DOCKER-COMPOSE: environment: - PASSWORD=${PASSWORD_HASH_SED}" >> $FILE_AUTH && echo >> $FILE_AUTH
         sleep 1
         cat $FILE_AUTH
     elif [[ "$PASSWORD_FORMAT" == "SHA1" ]]; then
